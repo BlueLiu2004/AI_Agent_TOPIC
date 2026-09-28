@@ -1,0 +1,30 @@
+{
+  "run_started_at": "2026-09-24T20:01:36.483587+08:00",
+  "questions": [
+    {
+      "index": 3,
+      "question": "公司要求使用哪一版的 Node.js？給我該版 Node.js 的官方下載網址。",
+      "status": "failed",
+      "error_type": "Exception",
+      "error": "[503] {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}\n{'error': {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}, 'status': 503}",
+      "elapsed_seconds": 2.44
+    },
+    {
+      "index": 4,
+      "question": "公司要求新人第一週學 Docker，請告訴我需要學哪些內容，並幫我找最新的 Docker 官方入門教學。",
+      "status": "failed",
+      "error_type": "Exception",
+      "error": "[503] {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}\n{'error': {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}, 'status': 503}",
+      "elapsed_seconds": 2.79
+    },
+    {
+      "index": 6,
+      "question": "公司允許 telecommuting 嗎？",
+      "status": "failed",
+      "error_type": "Exception",
+      "error": "[503] {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}\n{'error': {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}, 'status': 503}",
+      "elapsed_seconds": 2.54
+    }
+  ],
+  "run_finished_at": "2026-09-24T20:01:56.228502+08:00"
+}

@@ -1,0 +1,1 @@
+請分類員工問題：只需要公司內部規範為 internal；只需要目前公開網路資訊為 external；同時需要兩者為 hybrid。若問「公司要求使用哪一版 Node.js」又要「該版本的官方下載網址」，必須選 hybrid；公司新人訓練加官方教學、公司加班規定加公開法規，也必須選 hybrid。只回傳 JSON 物件，鍵名必須是 route，值只能是 internal、external 或 hybrid。

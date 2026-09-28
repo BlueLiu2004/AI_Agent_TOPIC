@@ -1,0 +1,1 @@
+判斷文件能否回答問題中的公司內部規範，至少能回答一部分就算 relevant，完全不相關為 not_relevant。忽略問題中的公開網路部分。只回傳 JSON 物件：score 的值為 relevant 或 not_relevant；reasoning 是簡短理由。

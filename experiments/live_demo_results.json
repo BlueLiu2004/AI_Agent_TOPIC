@@ -1,0 +1,117 @@
+{
+  "run_started_at": "2026-09-24T19:59:38.198640+08:00",
+  "questions": [
+    {
+      "index": 1,
+      "question": "公司的遠端工作政策是什麼？",
+      "status": "completed",
+      "route": "internal",
+      "doc_grade": "relevant",
+      "retry_count": 0,
+      "retrieved_sources": [
+        "hr-06",
+        "hr-03",
+        "hr-07",
+        "hr-01"
+      ],
+      "web_query": "",
+      "web_called": false,
+      "web_urls": [],
+      "web_error": "",
+      "final_answer": "公司內部規範：  \n完成 90 天適應期的正職員工，每週最多可遠端工作 3 天，須事先與主管排定並在行事曆標示工作地點。遠端日仍須於核心協作時段 10:00 至 16:00 可聯絡，使用公司設備與 VPN；全遠端安排須另經部門主管核准。  \n\n來源：[hr-06] 遠端工作政策。",
+      "trace": [
+        "router: internal",
+        "retrieve: 遠端工作政策, 事假政策, 出勤規範, 年假政策",
+        "grade: relevant",
+        "generate"
+      ],
+      "elapsed_seconds": 3.33
+    },
+    {
+      "index": 2,
+      "question": "目前 Node.js 官方最新 LTS 是哪一版？",
+      "status": "completed",
+      "route": "external",
+      "doc_grade": "",
+      "retry_count": 0,
+      "retrieved_sources": [],
+      "web_query": "Node.js latest LTS version official",
+      "web_called": true,
+      "web_urls": [
+        "https://nodejs.org/en/blog/release/v24.18.0",
+        "https://nodejs.org/en/blog/release/v24.11.0",
+        "https://nodejs.org/en/blog/release/v24.20.0",
+        "https://nodejs.org/en/blog/release/v24.21.0",
+        "https://nodejs.org/en/blog/release/v18.18.0"
+      ],
+      "web_error": "",
+      "final_answer": "Node.js 官方最新 LTS 版本為 **Node.js 24.21.0 (LTS)**，代號 'Krypton'，於 2026-09-08 發布。\n\n外部來源：\nhttps://nodejs.org/en/blog/release/v24.18.0\nhttps://nodejs.org/en/blog/release/v24.11.0\nhttps://nodejs.org/en/blog/release/v24.20.0\nhttps://nodejs.org/en/blog/release/v24.21.0\nhttps://nodejs.org/en/blog/release/v18.18.0",
+      "trace": [
+        "router: external",
+        "build_web_query: Node.js latest LTS version official",
+        "tavily_search: 5 個網址",
+        "generate"
+      ],
+      "elapsed_seconds": 26.76
+    },
+    {
+      "index": 3,
+      "question": "公司要求使用哪一版的 Node.js？給我該版 Node.js 的官方下載網址。",
+      "status": "failed",
+      "error_type": "Exception",
+      "error": "[503] {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}\n{'error': {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}, 'status': 503}",
+      "elapsed_seconds": 1.79
+    },
+    {
+      "index": 4,
+      "question": "公司要求新人第一週學 Docker，請告訴我需要學哪些內容，並幫我找最新的 Docker 官方入門教學。",
+      "status": "failed",
+      "error_type": "Exception",
+      "error": "[503] {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}\n{'error': {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}, 'status': 503}",
+      "elapsed_seconds": 2.47
+    },
+    {
+      "index": 5,
+      "question": "公司的加班規定是什麼？目前台灣公開法規對加班有哪些規範？",
+      "status": "completed",
+      "route": "hybrid",
+      "doc_grade": "relevant",
+      "retry_count": 0,
+      "retrieved_sources": [
+        "hr-04",
+        "hr-08",
+        "hr-07",
+        "hr-06"
+      ],
+      "web_query": "臺灣 勞動基準法 延長工時 加班費 勞動部 最新規定",
+      "web_called": true,
+      "web_urls": [
+        "https://www.mol.gov.tw",
+        "https://www.mol.gov.tw/1607/28162/28166/28180/28198/28200/29052",
+        "https://www.mol.gov.tw/1607/1632/1640/63139",
+        "https://calcr2.mol.gov.tw/Index",
+        "https://www.mol.gov.tw/1607/28162/28166/28180/28198/28202"
+      ],
+      "web_error": "",
+      "final_answer": "**公司內部規範（TechCore）**  \n根據內部人資文件，TechCore 的加班規定如下：  \n- 加班須事前由直屬主管在出勤系統核准；員工應記錄實際起訖時間，不得以未經核准的工時自行抵休。  \n- 加班費或補休依當時適用的臺灣法令及人資公告計算；遇差異請向人資確認。  \n- 本文件不宣稱固定倍率，僅說明依法令執行。  \n（來源：[hr-04] 加班政策）\n\n**外部公開資訊（台灣法規）**  \n台灣《勞動基準法》對加班（延長工時）的主要規範如下：  \n1. 正常工作時間：每日不超過 8 小時，每週不超過 40 小時（第30條）。超過此時數者即為加班。  \n2. 加班費計算標準（第24條第1項）：  \n   - 延長工作時間在 2 小時以內者，按平日每小時工資額加給 1/3 以上。  \n   - 再延長工作時間在 2 小時以內者（即第 3~4 小時），按平日每小時工資額加給 2/3 以上。  \n3. 月總延長工時上限：  \n   - 原則上一個月不超過 46 小時。  \n   - 經工會同意或（無工會則經）勞資會議同意後，可延長至 一個月不超過 54 小時，且 每 3 個月不超過 138 小時（第32條）。  \n4. 日總工作時間上限：延長工時連同正常工作時間，一日不得超過 12 小時（第32條）。  \n5. 休息日加班（例假日以外之休息日）：  \n   - 工作時間在 2 小時以內者，按平日每小時工資額另再加給 1 又 1/3 以上。  \n   - 工作 2 小時後繼續者，按平日每小時工資額另再加給 1 又 2/3 以上。  \n   - 工作超過 8 小時者，按平日每小時工資額另再加給 2 又 2/3 以上（第24條第2項）。  \n6. 加班補休：  \n   - 雇主應依法給付加班費；僅在勞工有意願、並經雇主同意後，始得以補休替代加班費（不可片面要求只補休）。  \n   - 補休方式應依發生時間先後順序進行；補休期限原則由勞資協商，但施行細則已明定以勞雇雙方特別休假約定年度之末日為最終補休期限，無得再遞延。  \n   - 若未能於期限內補休完畢，雇主仍應按當日工資計算標準發給工資（不得以補休逃避給付加班費）。  \n   （來源：勞動部《加班補休規定》更新日期 2024-12-31）  \n7. 雇主不得以片面規定或事前約定剝奪勞工加班費請求權；違規可能遭罰新台幣 2 萬至 100 萬元。  \n   （來源：勞動部《五大常見加班費違法態樣》）\n\n> 補充說明：  \n> - 內部文件未載具體倍率，僅強調依法令及人資公告執行，實際計算仍需參照適用之法令（如上）與最新人資公告。  \n> - 外部資訊僅說明公開法規，未代表公司內部政策；公司實際\n\n外部來源：\nhttps://www.mol.gov.tw\nhttps://www.mol.gov.tw/1607/28162/28166/28180/28198/28200/29052\nhttps://www.mol.gov.tw/1607/1632/1640/63139\nhttps://calcr2.mol.gov.tw/Index\nhttps://www.mol.gov.tw/1607/28162/28166/28180/28198/28202",
+      "trace": [
+        "router: hybrid（內部規範與外部資訊並問）",
+        "retrieve: 加班政策, 彈性工時, 出勤規範, 遠端工作政策",
+        "grade: relevant",
+        "build_web_query: 臺灣 勞動基準法 延長工時 加班費 勞動部 最新規定",
+        "tavily_search: 5 個網址",
+        "generate"
+      ],
+      "elapsed_seconds": 33.9
+    },
+    {
+      "index": 6,
+      "question": "公司允許 telecommuting 嗎？",
+      "status": "failed",
+      "error_type": "Exception",
+      "error": "[503] {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}\n{'error': {'message': 'Service temporarily overloaded', 'type': 'Service Unavailable', 'code': 503}, 'status': 503}",
+      "elapsed_seconds": 2.27
+    }
+  ],
+  "run_finished_at": "2026-09-24T20:01:00.599840+08:00"
+}

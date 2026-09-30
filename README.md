@@ -53,7 +53,9 @@ Hybrid 範例中，`grade_documents` 將內部文件寫入 `internal_context`，
 
 `knowledge.json` 共 50 筆、五類各 10 筆：人資與工作規範、資訊與開發環境、資訊安全、員工到職、行政與內部流程。每筆都有 `source`、`title`、`category`、`content`，全部內容使用臺灣繁體中文。例：`it-01`「Node.js 標準版本」明載公司要求 Node.js 22，但沒有官方下載網址；`onboarding-02` 規定新人第一週學 Docker；`hr-04` 記載加班須事前核准，但法定計算仍須外部查證。政策純屬虛構，不能作為真實勞動法令或公司規章。
 
-索引沿用原版 `chromadb.EphemeralClient()`，每次啟動重新嵌入，不需外部資料庫。多語模型首次使用會下載，啟動可能較慢。
+索引沿用原版 `chromadb.EphemeralClient()`，每次啟動重新嵌入，不需外部資料庫。Embedding 使用 NVIDIA 託管的 `nvidia/nemotron-3-embed-1b`，讀取 `EMBEDDING_MODEL` 與 `NVIDIA_API_KEY`；不再下載本機 SentenceTransformer 模型。文件透過 `embed_documents` 使用 `input_type=passage`，查詢透過 `embed_query` 使用 `input_type=query`，符合 [NVIDIA API 規格](https://docs.api.nvidia.com/nim/reference/nvidia-nemotron-3-embed-1b-infer)。啟動建索引與每次向量查詢皆需要網路及 NVIDIA 金鑰，即使聊天模型選 Gemini 也一樣。
+
+2026-09-28 切換後驗證：19 項測試通過；實際 NVIDIA embedding 建立 50 筆、每筆 2048 維的 Chroma 索引，Node.js 查詢前三筆為 `it-01`、`it-02`、`it-08`。目前 SDK 的模型目錄會顯示新模型型別尚未識別的 warning，但此次 embedding 請求成功。
 
 ## Tavily MCP
 
@@ -72,7 +74,7 @@ Copy-Item .env.example .env
 notepad .env
 ```
 
-在 `.env` 填入 `TAVILY_API_KEY`，並選擇 `LLM_PROVIDER=nvidia` 搭配 `NVIDIA_API_KEY`、`CHAT_MODEL`，或 `LLM_PROVIDER=gemini` 搭配 `GOOGLE_API_KEY`。若已有其他位置的 `.env`，可在執行前設定 `$env:ONBOARDBOT_ENV_FILE='C:\完整路徑\.env'`，不必複製金鑰。這次提供的 `Original\TOPIC\.env` 已用此方式實測；其中 `EMBEDDING_MODEL` 是 NVIDIA 遠端模型，本專案的 Chroma 使用 `EMBEDDING_MODEL_NAME` 指定的本機多語模型。若電腦沒有 Python 3.12，可用 `uv venv --python 3.12 .venv` 及 `uv pip install --python .venv\Scripts\python.exe -r requirements.txt`。不要提交 `.env`。
+在 `.env` 填入 `TAVILY_API_KEY`、`NVIDIA_API_KEY` 與 `EMBEDDING_MODEL=nvidia/nemotron-3-embed-1b`。聊天模型選擇 `LLM_PROVIDER=nvidia` 搭配 `CHAT_MODEL`，或 `LLM_PROVIDER=gemini` 搭配 `GOOGLE_API_KEY`。若已有其他位置的 `.env`，可在執行前設定 `$env:ONBOARDBOT_ENV_FILE='C:\完整路徑\.env'`，不必複製金鑰。Embedding 與聊天模型設定獨立；舊的 `EMBEDDING_MODEL_NAME` 不再使用。若電腦沒有 Python 3.12，可用 `uv venv --python 3.12 .venv` 及 `uv pip install --python .venv\Scripts\python.exe -r requirements.txt`。不要提交 `.env`。
 
 ```powershell
 .\.venv\Scripts\python.exe app.py

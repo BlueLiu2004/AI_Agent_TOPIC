@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 
 import chromadb
 from langchain_core.documents import Document
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from pydantic import BaseModel
 
@@ -60,6 +60,58 @@ def _official_domains(question: str) -> list[str]:
     if "加班" in question and ("法規" in question or "勞基法" in question):
         return ["mol.gov.tw", "law.moj.gov.tw"]
     return []
+
+
+def _node_download_answer(state: OnboardingState) -> str | None:
+    """公司指定完整 Node.js 版本時，由程式挑選相符的搜尋來源。"""
+    question = state["original_question"]
+    if state["route"] != "hybrid" or "node.js" not in question.lower():
+        return None
+    if not re.search(r"下載|download", question, re.IGNORECASE):
+        return None
+    matches = list(re.finditer(
+        r"Node\.js\s*v?(\d+\.\d+\.\d+)(?![\d.A-Za-z_-])",
+        state["internal_context"], re.IGNORECASE,
+    ))
+    versions = {match.group(1) for match in matches}
+    if not versions:
+        return None
+    if len(versions) != 1:
+        return "公司內部規範：內部資料包含多個 Node.js 完整版本，請先向 IT 確認適用版本；目前不指定下載網址。"
+    version = versions.pop()
+    line = state["internal_context"][:matches[0].start()].split("\n")[-1]
+    source = re.search(r"\[([^\]\n]+)\]", line)
+    reference = f"（內部文件 [{source.group(1)}]）" if source else "（依內部文件）"
+    answer = f"公司內部規範：請安裝 **Node.js {version}**{reference}，不要自行改用其他修補版本。"
+    candidates = []
+    for url in set(state["web_urls"]):
+        parsed = urlparse(url)
+        if parsed.scheme != "https" or parsed.hostname not in {"nodejs.org", "www.nodejs.org"}:
+            continue
+        path = parsed.path.rstrip("/")
+        suffix = re.escape(version)
+        if re.fullmatch(rf"/[a-zA-Z-]+/download/archive/v{suffix}", path):
+            candidates.append((0, url, "官方版本下載頁"))
+        elif re.fullmatch(rf"/(?:dist|download/release)/v{suffix}", path):
+            candidates.append((1, url, "官方版本檔案目錄"))
+        elif re.fullmatch(rf"/[a-zA-Z-]+/blog/release/v{suffix}", path):
+            candidates.append((2, url, "官方發行頁（含下載連結）"))
+    if candidates:
+        _, url, label = min(candidates)
+        answer += (
+            f"\n\n外部公開資訊：**請從這裡下載 Node.js {version}：**"
+            f"[{label}]({url})。請依作業系統與 CPU 架構選擇檔案。"
+            f"安裝後執行 `node --version`，確認顯示 `v{version}`。"
+            f"\n\n外部來源：<{url}>"
+        )
+    else:
+        answer += (
+            f"\n\n外部公開資訊：本次搜尋未找到版本完全相符的 Node.js {version} "
+            "官方下載或發行頁。其他版本與只有主版本的頁面不能代替指定版本；目前不提供下載連結，請重新搜尋或向 IT 確認。"
+        )
+    if state["web_error"]:
+        answer += f"\n\n外部資訊狀態：{state['web_error']}"
+    return answer
 
 
 class RAGNodes:
@@ -144,8 +196,8 @@ class RAGNodes:
         original = state["original_question"]
         context = state["internal_context"]
         domains = _official_domains(original)
-        version = re.search(r"Node\.js\s*(\d+)", context, re.IGNORECASE)
-        if state["route"] == "hybrid" and version and "Node.js" in original:
+        version = re.search(r"Node\.js\s*v?(\d+(?:\.\d+){0,2})", context, re.IGNORECASE)
+        if state["route"] == "hybrid" and version and "node.js" in original.lower():
             query = f"Node.js {version.group(1)} official download site:nodejs.org"
         elif "Docker" in original and "教學" in original:
             query = "Docker official get started tutorial site:docs.docker.com"
@@ -232,6 +284,13 @@ class RAGNodes:
             }
 
     def generate_node(self, state: OnboardingState) -> dict:
+        download_answer = _node_download_answer(state)
+        if download_answer is not None:
+            return {
+                "messages": [AIMessage(content=download_answer)],
+                "final_answer": download_answer,
+                "trace": state["trace"] + ["generate: 核對完整 Node.js 版本與官方下載來源"],
+            }
         route = state["route"]
         if route == "internal":
             system = self.generate_prompt.format(context=state["internal_context"])
@@ -253,7 +312,8 @@ class RAGNodes:
         if state["web_error"]:
             answer += f"\n\n外部資訊狀態：{state['web_error']}"
         if state["web_urls"]:
-            answer += "\n\n外部來源：\n" + "\n".join(state["web_urls"])
+            sources = sorted(set(state["web_urls"]))
+            answer += "\n\n外部來源：" + "、".join(f"<{url}>" for url in sources)
         return {
             "messages": [response],
             "final_answer": answer,

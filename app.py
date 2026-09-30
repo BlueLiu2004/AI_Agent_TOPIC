@@ -34,8 +34,8 @@ class OnboardingApp:
         return result["final_answer"], debug
 
     def launch(self):
-        with gr.Blocks(title="TechCore OnboardBot") as demo:
-            gr.Markdown("# TechCore OnboardBot\n虛構公司新人助理：內部知識庫、公開搜尋與混合問答。")
+        with gr.Blocks(title="AI Agent TOPIC") as demo:
+            gr.Markdown("# AI Agent TOPIC")
             question = gr.Textbox(label="問題", lines=2, value="公司要求使用哪一版的 Node.js？給我該版 Node.js 的官方下載網址。")
             submit = gr.Button("查詢")
             answer = gr.Markdown(label="回答")

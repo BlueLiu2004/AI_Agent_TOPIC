@@ -1,0 +1,27 @@
+{
+  "name": "onboardbot-tutorial",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Deterministic Traditional Chinese OnboardBot teaching video",
+  "scripts": {
+    "studio": "remotion studio src/index.ts --env-file=render.env",
+    "typecheck": "tsc --noEmit",
+    "render": "node scripts/render-video.mjs",
+    "qa:stills": "node scripts/render-stills.mjs",
+    "captions": "node scripts/write-captions.mjs",
+    "audio": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/speak.ps1"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.529",
+    "@remotion/renderer": "4.0.529",
+    "@remotion/bundler": "4.0.529",
+    "remotion": "4.0.529",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2"
+  }
+}

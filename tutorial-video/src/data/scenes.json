@@ -1,0 +1,10 @@
+[
+  {"id":"hook","start":0,"end":12,"title":"一個問題，兩種資料來源","chapter":"01  提問"},
+  {"id":"routes","start":12,"end":34,"title":"Router 決定資料從哪裡來","chapter":"02  路由"},
+  {"id":"state","start":34,"end":54,"title":"跟著 State 看資料怎麼變","chapter":"03  狀態"},
+  {"id":"hybrid","start":54,"end":100,"title":"追蹤 Node.js 22 的旅程","chapter":"04  混合查詢"},
+  {"id":"corrective","start":100,"end":132,"title":"不相關，就改寫再檢索","chapter":"05  修正回圈"},
+  {"id":"mcp","start":132,"end":156,"title":"MCP 連接工具，來源仍需檢查","chapter":"06  工具與來源"},
+  {"id":"tests","start":156,"end":178,"title":"流程通過，答案仍要核對","chapter":"07  測試與現實"},
+  {"id":"recap","start":178,"end":192,"title":"沿著一份 State，讀懂整張圖","chapter":"08  回顧"}
+]

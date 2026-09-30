@@ -1,0 +1,212 @@
+{
+  "snippets": {
+    "state": {
+      "file": "state.py",
+      "first": 11,
+      "last": 21,
+      "lines": [
+        "    original_question: str",
+        "    question: str",
+        "    route: Literal[\"internal\", \"external\", \"hybrid\"]",
+        "    documents: list[Document]",
+        "    doc_grade: str",
+        "    retry_count: int",
+        "    internal_context: str",
+        "    web_query: str",
+        "    web_domains: list[str]",
+        "    web_results: str",
+        "    web_urls: list[str]"
+      ]
+    },
+    "routing": {
+      "file": "graph.py",
+      "first": 13,
+      "last": 22,
+      "lines": [
+        "def route_by_source(state: OnboardingState) -> str:",
+        "    return state[\"route\"]",
+        "",
+        "",
+        "def route_by_relevance(state: OnboardingState) -> str:",
+        "    if state[\"doc_grade\"] == \"relevant\":",
+        "        return \"build_web_query\" if state[\"route\"] == \"hybrid\" else \"generate\"",
+        "    if state[\"retry_count\"] >= Config.MAX_QUERY_RETRIES:",
+        "        return \"fallback_generate\"",
+        "    return \"rewrite_query\""
+      ]
+    },
+    "edges": {
+      "file": "graph.py",
+      "first": 44,
+      "last": 48,
+      "lines": [
+        "        graph.add_edge(START, \"router\")",
+        "        graph.add_conditional_edges(\"router\", route_by_source, {",
+        "            \"internal\": \"retrieve\",",
+        "            \"external\": \"build_web_query\",",
+        "            \"hybrid\": \"retrieve\","
+      ]
+    },
+    "urls": {
+      "file": "nodes.py",
+      "first": 251,
+      "last": 256,
+      "lines": [
+        "            if url.rstrip(\".,;:)]\") not in state[\"web_urls\"]:",
+        "                answer = answer.replace(url, \"（請見下方外部來源）\")",
+        "        if state[\"web_error\"]:",
+        "            answer += f\"\\n\\n外部資訊狀態：{state['web_error']}\"",
+        "        if state[\"web_urls\"]:",
+        "            answer += \"\\n\\n外部來源：\\n\" + \"\\n\".join(state[\"web_urls\"])"
+      ]
+    },
+    "retryTest": {
+      "file": "tests/test_workflow.py",
+      "first": 171,
+      "last": 178,
+      "lines": [
+        "    async def test_corrective_retry(self):",
+        "        runner, _ = make_runner()",
+        "        result = await runner.ask_with_trace(\"公司允許 telecommuting 嗎？\")",
+        "        self.assertEqual(result[\"route\"], \"internal\")",
+        "        self.assertEqual(result[\"retry_count\"], 1)",
+        "        self.assertEqual(result[\"question\"], \"遠端工作政策\")",
+        "        self.assertEqual(result[\"doc_grade\"], \"relevant\")",
+        "        self.assertTrue(any(\"rewrite:\" in step for step in result[\"trace\"]))"
+      ]
+    }
+  },
+  "graph": {
+    "nodes": [
+      "router",
+      "retrieve",
+      "grade_documents",
+      "rewrite_query",
+      "build_web_query",
+      "tavily_search",
+      "generate",
+      "fallback_generate"
+    ],
+    "edges": [
+      {
+        "from": "START",
+        "to": "router",
+        "condition": ""
+      },
+      {
+        "from": "router",
+        "to": "retrieve",
+        "condition": "internal"
+      },
+      {
+        "from": "router",
+        "to": "build_web_query",
+        "condition": "external"
+      },
+      {
+        "from": "router",
+        "to": "retrieve",
+        "condition": "hybrid"
+      },
+      {
+        "from": "retrieve",
+        "to": "grade_documents",
+        "condition": ""
+      },
+      {
+        "from": "grade_documents",
+        "to": "generate",
+        "condition": "generate"
+      },
+      {
+        "from": "grade_documents",
+        "to": "build_web_query",
+        "condition": "build_web_query"
+      },
+      {
+        "from": "grade_documents",
+        "to": "rewrite_query",
+        "condition": "rewrite_query"
+      },
+      {
+        "from": "grade_documents",
+        "to": "fallback_generate",
+        "condition": "fallback_generate"
+      },
+      {
+        "from": "rewrite_query",
+        "to": "retrieve",
+        "condition": ""
+      },
+      {
+        "from": "build_web_query",
+        "to": "tavily_search",
+        "condition": ""
+      },
+      {
+        "from": "tavily_search",
+        "to": "generate",
+        "condition": ""
+      },
+      {
+        "from": "generate",
+        "to": "END",
+        "condition": ""
+      },
+      {
+        "from": "fallback_generate",
+        "to": "END",
+        "condition": ""
+      }
+    ]
+  },
+  "policy": {
+    "source": "it-01",
+    "title": "Node.js 標準版本",
+    "category": "資訊與開發環境",
+    "content": "TechCore 前端標準開發環境要求使用 Node.js 22.11.0，專案的版本設定檔與 CI 都以 22 為基準。新人在本機安裝後請執行 node --version 核對；若專案需例外版本，先由技術負責人書面確認。本內部文件不收錄官方下載網址。"
+  },
+  "datasetSize": 50,
+  "experiment": {
+    "first": {
+      "total": 6,
+      "completed": 3
+    },
+    "second": {
+      "total": 6,
+      "completed": 6
+    },
+    "hybrid": {
+      "route": "hybrid",
+      "doc_grade": "relevant",
+      "web_query": "Node.js 22 official download site:nodejs.org",
+      "web_urls": [
+        "https://nodejs.org/id/blog/release/v22.11.0",
+        "https://nodejs.org/en/download/archive/v12.22.1"
+      ],
+      "trace": [
+        "router: hybrid（內部規範與外部資訊並問）",
+        "retrieve: Node.js 標準版本, GitHub Repository 規範, Git 使用規範, VPN 連線程序",
+        "grade: relevant",
+        "build_web_query: Node.js 22 official download site:nodejs.org",
+        "tavily_search: 2 個網址",
+        "generate"
+      ]
+    },
+    "correctiveActual": {
+      "route": "hybrid",
+      "retry_count": 1,
+      "trace": [
+        "router: hybrid",
+        "retrieve: 公司 Wi-Fi 使用規範, 公司設備規範, 多因素驗證, 加班政策",
+        "grade: not_relevant",
+        "rewrite: 公司允許遠端工作嗎？",
+        "retrieve: 遠端工作政策, 出勤規範, 事假政策, 出差申請",
+        "grade: relevant",
+        "build_web_query: 公司 telecommuting 遠端工作政策 每週最多 3 天 90 天適應期 核心協作時段 10:00-16:00",
+        "tavily_search: 5 個網址",
+        "generate"
+      ]
+    }
+  }
+}

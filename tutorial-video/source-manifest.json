@@ -1,0 +1,23 @@
+{
+  "README.md": "066deb3167dde2b0f8b97b8ac3aaf9e27be26d07b76e41a2c868c5f76956c0a1",
+  "state.py": "3feee922ad508f6a12e49110cce2a0a1129b4687ec62eacc58a7bad9f767a9b7",
+  "graph.py": "951c62fc478da8a7328ffa2f3bce4a0cefbb90e358e82e75cb238cf9eb163af3",
+  "nodes.py": "0bf2f1a68bdcfd8e5fd9bffcfd3f0e47ca6f493bc13172d2caa941a0bf9da722",
+  "knowledge_base.py": "54472cdfed194811fadc3e7a846cf834586699a40638bace5144bf44e7bd1c99",
+  "llm.py": "8e87f68fa61d37e28e4a759240c8f2a530e0c0a82fe713ea9b1f48d5db9cce5c",
+  "config.py": "94861c64d5a48d331b541b1f8f94627f47b8fada3c6767aa16f884571cb3e042",
+  "onboarding_runner.py": "8672fb95afbe4d00a897b2785a00044ea42cf2e4084cda2c3d42890bcbc0c0e9",
+  "tests/test_workflow.py": "70cd53222a831695da0b5c47cf0bd044a37298bb3d16693231920d563b4fb2c2",
+  "knowledge.json": "f5d08397b49b5e9429738951347f2f656dfe52817af15e39420c2b4a74899309",
+  "OnboardBot_中文實驗報告.md": "210b92e81ece51bb4750815366b10ea0940582e4b9b7221561cd78a34b6f186d",
+  "prompts/build_web_query.txt": "584f5acaadb473bc31014eeef0aad26d1f8ff084ab6ae3c1110fc7fc8285a471",
+  "prompts/generate_fallback.txt": "33c591ce35b24a05526ad093b98b5f122fc1bf1fbd5463b69520ae0890858b4d",
+  "prompts/generate_with_rag.txt": "887276b1940fa2ddd12a1d4c26abc38e75cf1dedc372105f7ee04960298f7464",
+  "prompts/generate_with_web.txt": "e7c228e75ad3fbfbc4445bdb43576828d3dcb591ef37e2f8bf0cf3c2788c42e4",
+  "prompts/grade_documents.txt": "4da15b115265e68620aa3972192875318faa0b73360e4f96240356c8fa92f95f",
+  "prompts/rewrite_query.txt": "d4109c7e498f27971676eb6b36b722ec85ae90f802569b8472395123fa35baf8",
+  "prompts/route.txt": "fef8854f5da5455734a8662985a978a27e2a36e24793fdecf641e3ddb992a513",
+  "experiments/live_demo_2026-09-25.json": "eba3bc2a4ac7b5ed047a5e205f0f411a6f7de98221b8e62a01f6946015cf4ef7",
+  "experiments/live_demo_results.json": "f1ae60c4efa0beb14bac048c449b07305708f28653cd8f3f9d5f09400ec82574",
+  "experiments/live_demo_retry_results.json": "80c4f44b7db0d32dfb4fcc875f8219f343c2a089764b2911c264dde4305cc71c"
+}
